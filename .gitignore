@@ -1,0 +1,12 @@
+
+/dist/
+
+/.DS_Store
+
+/node_modules/
+
+/src/.DS_Store
+
+/yarn.lock
+
+/yarn-error.log
