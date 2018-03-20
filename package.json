@@ -21,7 +21,8 @@
   "scripts": {
     "build": "webpack --config webpack.prod.js",
     "start": "webpack-dev-server --open --config webpack.dev.js",
-    "serve": "webpack --config webpack.prod.js && http-server dist"
+    "serve": "webpack --config webpack.prod.js && http-server dist",
+    "deploy": "yarn build && gh-pages -d dist"
   },
   "devDependencies": {
     "babel-core": "^6.26.0",

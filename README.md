@@ -1,6 +1,10 @@
 # intro-ml-deeplearn-js
 Seed of ML exercises using Deeplearn.js + Typescript + Polymer 3.x + Webpack
 
+Just see it
+==
+<https://ml-worthing.github.io/intro-ml-deeplearn-js>
+
 Prerequisites
 ==
 - [nvm](https://github.com/creationix/nvm) - bash script to manage multiple active node.js versions
@@ -9,10 +13,11 @@ Prerequisites
 Build
 ==
 
-  Run `yarn install` to download dependent modules
-  Run `yarn build` to compile distribution for prod
-  Run `yarn start` to hot-deploy locally for development
-  Run `yarn serve` to build prod and serve on localhost
+  - Run `yarn install` to download dependent modules
+  - Run `yarn build` to compile distribution for prod
+  - Run `yarn start` to hot-deploy locally for development
+  - Run `yarn serve` to build prod and serve on localhost
+  - Run `yarn deploy` to deploy new version on github.com
 
 Add new exercise sheet
 ==
