@@ -6,8 +6,8 @@ module.exports = merge(webpackConfig, {
   plugins: [
     new ClosureCompilerPlugin({
       compiler: {
-        language_in: 'ECMASCRIPT5',
-        language_out: 'ECMASCRIPT5',
+        language_in: 'ECMASCRIPT6',
+        language_out: 'ECMASCRIPT6',
         compilation_level: 'ADVANCED'
       },
       concurrency: 3,
