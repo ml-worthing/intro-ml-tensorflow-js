@@ -1,5 +1,5 @@
-# polymer3-typescript-webpack-seed
-Seed of reactive web application using Polymer 3.x + Typescript + Webpack
+# intro-ml-deeplearn-js
+Seed of ML exercises using Deeplearn.js + Typescript + Polymer 3.x + Webpack
 
 Prerequisites
 ==
