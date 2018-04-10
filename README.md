@@ -1,5 +1,5 @@
 # intro-ml-deeplearn-js
-Seed of ML exercises using Deeplearn.js + Typescript + Polymer 3.x + Webpack
+Seed of ML exercises using [Tensorflow.js](https://js.tensorflow.org/) + [Typescript](http://www.typescriptlang.org/docs/home.html) + Polymer 3.x + Webpack
 
 Just see it
 ==
