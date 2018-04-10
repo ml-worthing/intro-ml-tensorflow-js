@@ -15,7 +15,6 @@
     "@polymer/polymer": "next",
     "@tensorflow/tfjs": "^0.8.0",
     "@webcomponents/webcomponentsjs": "^1.1.0",
-    "deeplearn": "^0.5.1",
     "lodash": "^4.17.5"
   },
   "scripts": {

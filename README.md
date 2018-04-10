@@ -3,7 +3,7 @@ Seed of ML exercises using [Tensorflow.js](https://js.tensorflow.org/) + [Typesc
 
 Just see it
 ==
-<https://ml-worthing.github.io/intro-ml-deeplearn-js>
+<https://ml-worthing.github.io/intro-ml-tensorflow-js>
 
 Prerequisites
 ==
