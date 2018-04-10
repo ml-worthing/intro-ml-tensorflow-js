@@ -212,8 +212,8 @@ export class Model {
    */
   private prepareFeed(data: (i:number) => TrainingData, size:number): dl.FeedEntry[] {
 
-    const inputs = new Array(data.length);
-    const targets = new Array(data.length);
+    const inputs = new Array(size);
+    const targets = new Array(size);
 
     this.range(size).forEach((i) => {
       const d = data(i);

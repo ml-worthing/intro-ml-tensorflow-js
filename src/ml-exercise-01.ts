@@ -1,71 +1,137 @@
-import * as ml from './ml-model';
 import color from './complementary-color';
+import * as tf from '@tensorflow/tfjs';
 
 export class MLExercise01 {
 
-  private model: ml.Model;
+  private model: tf.Model;
+  private visualizer: tf.Callback;
 
   constructor(root: HTMLElement){
-    // Create learning model
-    this.model = new ml.Model({
-      "math": ml.ModelMath.ENV,
-      "inputShape": [3],
-      "layers": [
-        new ml.FullyConnectedLayer(64, ml.LayerActivation.RELU),
-        new ml.FullyConnectedLayer(32, ml.LayerActivation.RELU),
-        new ml.FullyConnectedLayer(16, ml.LayerActivation.RELU)
-      ],
-      "outputSize": 3,
-      "optimizer": ml.ModelOptimizer.SGD,
-      "learningRate": 0.01,
-      "batchSize": 50,
-      "localStepsToRun": 100,
-      "listener": new TrainingVisualizer(root),
-    });
+
+    const input: tf.SymbolicTensor = tf.input({shape: [3]});
+
+    const denseLayer1 = tf.layers.dense({units: 64, activation: 'relu'}).apply(input);
+    const denseLayer2 = tf.layers.dense({units: 32, activation: 'relu'}).apply(denseLayer1);
+    const denseLayer3 = tf.layers.dense({units: 16, activation: 'relu'}).apply(denseLayer2);
+    const output: tf.SymbolicTensor =
+      tf.layers.dense({units: 3}).apply(denseLayer3) as tf.SymbolicTensor;
+
+    this.model = tf.model({inputs: input, outputs: output});
+    this.model.compile({loss: 'meanSquaredError', optimizer: 'sgd', metrics: ['accuracy']});
+
+    this.visualizer = new TrainingVisualizer(root);
+
   }
 
+  private static range(start, end) { return Array.from({length: end-start}, (v, k) => k + start); }
+
   // Create training data set
-  private trainingDataGenerator = (i: number) => {
+  private data(i: number):[number[],number[]] {
     let rgbColor = color.random();
     let complementary = color.computeComplementary(rgbColor);
-    return [ color.normalize(rgbColor), color.normalize(complementary)] as ml.TrainingData;
+    return [ color.normalize(rgbColor), color.normalize(complementary)];
   };
 
   async start() {
-    // Kick off training.
-    this.model.train(this.trainingDataGenerator, 1e3, 1e-3);
+    // Create training data set
+    const totalSize = 1e4;
+    const sessionSize = 1000;
+    const batchSize = 50;
+
+    this.train({
+      data: this.data,
+      totalSize: 1e4,
+      sessionSize: 1000,
+      batchSize: 50,
+      currentStep: 0
+    });
   }
 
-  async stop(){
-    this.model.dispose();
+  private async train(task: TrainingTask){
+    // Kick off training.
+    //for (let step = 0; step < task.totalSize; step = step + task.sessionSize) {
+
+      let size = Math.min(task.sessionSize, task.totalSize - task.currentStep);
+      console.log(task.currentStep, size, task.currentStep/task.sessionSize);
+      if(size<=0) return;
+
+      let inputs = new Array(size);
+      let targets = new Array(size);
+
+      MLExercise01.range(0,size)
+        .forEach((i) => {
+            const d = this.data(task.currentStep + i);
+            inputs[i] = d[0];
+            targets[i] = d[1];
+          }
+        );
+
+      let xs = tf.tensor2d(inputs);
+      let ys = tf.tensor2d(targets);
+
+      await this.model.fit(xs, ys, {
+        batchSize: task.batchSize,
+        epochs: 1,
+        initialEpoch: Math.floor(task.currentStep/task.sessionSize),
+        callbacks: this.visualizer
+      });
+
+      tf.nextFrame().then(() => {
+        task.currentStep = task.currentStep + size;
+        this.train(task);
+      });
+    //}
   }
+
+  async stop(){}
 
 }
 
-class TrainingVisualizer implements ml.TrainingListener {
+class TrainingTask {
+  data: (i:number) => [number[],number[]];
+  totalSize: number;
+  sessionSize: number;
+  batchSize: number;
+  currentStep: number;
+}
 
-  root: HTMLElement;
+class TrainingVisualizer extends tf.Callback {
+
+  validationData: tf.Tensor | tf.Tensor[];
+  model: tf.Model;
+  params: any;
+
+  setParams(params: any): void {}
+
+  setModel(model: tf.Model): void {
+    this.model = model;
+  }
+
+  private root: HTMLElement;
 
   constructor(root: HTMLElement){
+    super();
     this.root = root;
   }
 
   log(...msg:any[]) {
     let entry = this.root.ownerDocument.createElement("div");
-    entry.className = "log-entry"
+    entry.className = "log-entry";
     entry.innerText = msg.join(" ");
-    this.root.appendChild(entry)
+    this.root.appendChild(entry);
   }
 
-  async trainingStarted(config: ml.ModelConfig, maxIterations: number, maxCost: number){
-    this.log(`Starting model training.
-    Max iterations: ${maxIterations}, target cost: ${maxCost}, learning rate: ${config.learningRate}, batch size: ${config.batchSize}`)
+  async onTrainBegin(logs?: tf.Logs){}
+  async onTrainEnd(logs?: tf.Logs){}
+  async onEpochBegin(epoch: number, logs?: tf.Logs){}
+  async onEpochEnd(epoch: number, logs?: tf.Logs){
+    this.log(`after ${epoch} epochs cost is ${this.lossOf(logs)}`)
   }
-  async trainingOngoing(step:number, cost:number){
-    this.log(`after ${step} steps cost is ${cost}`)
+  async onBatchBegin(batch: number, logs?: tf.Logs){}
+  async onBatchEnd(batch: number, logs?: tf.Logs){}
+
+  private lossOf(l:tf.Logs):number {
+    return ((l["loss"] as any).mean() as tf.Tensor1D).asScalar().get();
   }
-  async trainingFinished(step:number, cost:number){
-    this.trainingOngoing(step,cost);
-    this.log("Training finished.");
-  }
+
 }

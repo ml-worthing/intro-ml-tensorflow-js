@@ -7,7 +7,6 @@ export class Sheet01 extends PolymerElement {
       <div style="padding: 2rem;">
           <div>
             <button on-click="start">Train</button>
-            <button on-click="stop">Dispose</button>
           </div>
           <div class="box" id="output-ml-01" style="padding: 2rem 0;">
           </div>
@@ -30,9 +29,5 @@ export class Sheet01 extends PolymerElement {
 
     start() {
         this.exercise.start();
-    }
-
-    stop() {
-        this.exercise.stop();
     }
 }
