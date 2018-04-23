@@ -14,7 +14,9 @@
     "@polymer/paper-icon-button": "next",
     "@polymer/polymer": "next",
     "@tensorflow/tfjs": "^0.8.0",
+    "@types/d3": "^5.0.0",
     "@webcomponents/webcomponentsjs": "^1.1.0",
+    "d3": "^5.0.0",
     "lodash": "^4.17.5"
   },
   "scripts": {

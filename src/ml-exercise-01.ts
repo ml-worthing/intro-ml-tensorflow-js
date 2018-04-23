@@ -4,8 +4,8 @@ import * as mt from './model-trainer';
 
 export class MLExercise01 {
 
-  private model: tf.Model;
-  private root: HTMLElement;
+  private readonly model: tf.Model;
+  private readonly root: HTMLElement;
 
   constructor(root: HTMLElement){
     this.root = root;

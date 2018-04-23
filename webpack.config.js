@@ -48,6 +48,10 @@ module.exports = {
         to: 'index.html'
       },
       {
+        from: path.resolve(__dirname, 'static/'),
+        to: 'static'
+      },
+      {
         from: path.resolve(__dirname, 'node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js'),
         to: 'static'
       }
