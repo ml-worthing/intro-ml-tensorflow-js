@@ -11,6 +11,7 @@
     "@polymer/iron-icons": "next",
     "@polymer/iron-pages": "next",
     "@polymer/iron-selector": "next",
+    "@polymer/paper-button": "^3.0.0-pre.12",
     "@polymer/paper-icon-button": "next",
     "@polymer/polymer": "next",
     "@tensorflow/tfjs": "^0.8.0",

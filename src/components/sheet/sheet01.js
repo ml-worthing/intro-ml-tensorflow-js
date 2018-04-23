@@ -1,14 +1,26 @@
 import { PolymerElement, html } from '@polymer/polymer/polymer-element';
+import {} from '@polymer/paper-button/paper-button';
 import { MLExercise01 } from '../../ml-exercise-01';
+import { MLExercise02 } from '../../ml-exercise-02';
 
 export class Sheet01 extends PolymerElement {
 
     static get template() { return html`
-      <div style="padding: 2rem;">
+      <style>
+        paper-button.blue {
+          background: white;
+          color: var(--app-primary-color);
+          margin: 0.2rem;
+          font-size: 0.8em;
+        }
+      </style>
+      <div style="padding: 0 2rem;">
+          <h1>[[title]]</h1>
           <div>
-            <button on-click="start">Train</button>
+            <paper-button raised class="blue" on-click="start01">Train Complementary Color</paper-button>
+            <paper-button raised class="blue" on-click="start02">Train Pawel's problem</paper-button>
           </div>
-          <div class="box" id="output-ml-01" style="padding: 2rem 0;">
+          <div class="box" id="output" style="padding: 2rem 0;">
           </div>
       </div>
     `;
@@ -16,18 +28,28 @@ export class Sheet01 extends PolymerElement {
 
     static get properties() {
       return {
-
+          title: {
+              type: String,
+              value: "Exercises"
+          }
       };
     }
 
     ready(){
         super.ready();
-        let outputElement = this.root.getElementById('output-ml-01');
-        outputElement.innerHTML = null;
-        this.exercise = new MLExercise01(outputElement);
+        this.outputElement = this.root.getElementById('output');
     }
 
-    start() {
-        this.exercise.start();
+    start01() {
+        this.outputElement.innerHTML = null;
+        this.exercise01 = new MLExercise01(this.outputElement);
+        this.exercise01.start()
     }
+
+    start02() {
+        this.outputElement.innerHTML = null;
+        this.exercise02 = new MLExercise02(this.outputElement);
+        this.exercise02.start()
+    }
+
 }
