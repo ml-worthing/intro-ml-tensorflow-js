@@ -1,7 +1,8 @@
 import { PolymerElement, html } from '@polymer/polymer/polymer-element';
-import {} from '@polymer/paper-button/paper-button';
+import '@polymer/paper-button/paper-button';
 import { MLExercise01 } from '../../ml-exercise-01';
 import { MLExercise02 } from '../../ml-exercise-02';
+import '../chart/loss-accuracy';
 
 export class Sheet01 extends PolymerElement {
 
@@ -20,8 +21,8 @@ export class Sheet01 extends PolymerElement {
             <paper-button raised class="blue" on-click="start01">Train Complementary Color</paper-button>
             <paper-button raised class="blue" on-click="start02">Train Pawel's problem</paper-button>
           </div>
-          <div class="box" id="output" style="padding: 2rem 0;">
-          </div>
+          <div class="box" id="output" style="padding: 2rem 0;"></div>
+          <loss-accuracy-chart width="900" height="500"/>
       </div>
     `;
     }
@@ -38,17 +39,17 @@ export class Sheet01 extends PolymerElement {
     ready(){
         super.ready();
         this.outputElement = this.root.getElementById('output');
+        this.exercise01 = new MLExercise01(this.outputElement);
+        this.exercise02 = new MLExercise02(this.outputElement);
     }
 
     start01() {
         this.outputElement.innerHTML = null;
-        this.exercise01 = new MLExercise01(this.outputElement);
         this.exercise01.start()
     }
 
     start02() {
         this.outputElement.innerHTML = null;
-        this.exercise02 = new MLExercise02(this.outputElement);
         this.exercise02.start()
     }
 
