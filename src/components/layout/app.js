@@ -1,17 +1,16 @@
 import { PolymerElement, html } from '@polymer/polymer/polymer-element';
-import { Polymer } from '@polymer/polymer/lib/legacy/polymer-fn.js';
-import '@polymer/app-layout/app-drawer/app-drawer.js';
-import '@polymer/app-layout/app-drawer-layout/app-drawer-layout.js';
-import '@polymer/app-layout/app-header/app-header.js';
-import '@polymer/app-layout/app-header-layout/app-header-layout.js';
-import '@polymer/app-layout/app-scroll-effects/app-scroll-effects.js';
-import '@polymer/app-layout/app-toolbar/app-toolbar.js';
-import '@polymer/app-route/app-location.js';
-import '@polymer/app-route/app-route.js';
-import '@polymer/iron-pages/iron-pages.js';
-import '@polymer/iron-selector/iron-selector.js';
-import '@polymer/paper-icon-button/paper-icon-button.js';
-import '@polymer/iron-icons/iron-icons.js';
+import '@polymer/app-layout/app-drawer/app-drawer';
+import '@polymer/app-layout/app-drawer-layout/app-drawer-layout';
+import '@polymer/app-layout/app-header/app-header';
+import '@polymer/app-layout/app-header-layout/app-header-layout';
+import '@polymer/app-layout/app-scroll-effects/app-scroll-effects';
+import '@polymer/app-layout/app-toolbar/app-toolbar';
+import '@polymer/app-route/app-location';
+import '@polymer/app-route/app-route';
+import '@polymer/iron-pages/iron-pages';
+import '@polymer/iron-selector/iron-selector';
+import '@polymer/paper-icon-button/paper-icon-button';
+import '@polymer/iron-icons/iron-icons';
 
 export class MyApp extends PolymerElement {
 

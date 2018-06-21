@@ -4,7 +4,7 @@ import * as d3 from 'd3';
 export class LossAccuracyChart extends PolymerElement {
 
     static get template() { return html`
-      <svg id="loss" width="900" height="300"></svg>
+      <div id="loss-chart"></div>
     `;
     }
 
@@ -13,12 +13,17 @@ export class LossAccuracyChart extends PolymerElement {
           width: {
               type: Number,
               value: 900,
-              readOnly: true
+              notify: true
           },
           height: {
               type: Number,
               value: 300,
-              readOnly: true
+              notify: true
+          },
+          datasource: {
+              type: Array,
+              value: () => [[0,0.9],[1,0.5],[5,0.7]],
+              notify: true
           }
       };
     }
@@ -26,61 +31,75 @@ export class LossAccuracyChart extends PolymerElement {
     ready(){
         super.ready();
 
-        const svg = d3.select(this.root.getElementById("loss")),
-            margin = {top: 20, right: 20, bottom: 30, left: 50},
-            width = +svg.attr("width") - margin.left - margin.right,
-            height = +svg.attr("height") - margin.top - margin.bottom,
-            g = svg.append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+        this.chart = d3.select(this.root.getElementById("loss-chart"));
 
-        const parseTime = d3.timeParse("%d-%b-%y");
+        const svg = this.chart
+            .append('svg')
+            .attr('width', this.width)
+            .attr('height', this.height);
 
-        const x = d3.scaleTime()
-            .rangeRound([0, width]);
+        const plotMargins = {
+            top: 30,
+            bottom: 30,
+            left: 30,
+            right: 30
+        };
 
-        const y = d3.scaleLinear()
-            .rangeRound([height, 0]);
+        const plotGroup = svg.append('g')
+            .classed('plot', true)
+            .attr('transform', `translate(${plotMargins.left},${plotMargins.top})`);
 
-        const line = d3.line()
-            .x(function(d) { return x(d.date); })
-            .y(function(d) { return y(d.close); });
+        const plotWidth = this.width - plotMargins.left - plotMargins.right;
+        const plotHeight = this.height - plotMargins.top - plotMargins.bottom;
 
-        d3.tsv("static/data.tsv", function(d) {
-                d.date = parseTime(d.date);
-                d.close = +d.close;
-                return d;
-            })
-            .then(function(data) {
+        const xScale = d3.scaleLinear()
+            .range([0, plotWidth])
+            .domain([0,10]);
+        const xAxis = d3.axisBottom(xScale);
+        const xAxisGroup = plotGroup.append('g')
+            .classed('x', true)
+            .classed('axis', true)
+            .attr('transform', `translate(${0},${plotHeight})`)
+            .call(xAxis);
 
-                data = data.filter(d => d.date!=null);
+        const yScale = d3.scaleLinear()
+            .range([plotHeight, 0])
+            .domain([0,1]);
+        const yAxis = d3.axisLeft(yScale);
+        const yAxisGroup = plotGroup.append('g')
+            .classed('y', true)
+            .classed('axis', true)
+            .call(yAxis);
 
-                x.domain(d3.extent(data, function(d) { return d.date; }));
-                y.domain(d3.extent(data, function(d) { return d.close; }));
+        plotGroup.selectAll("circle")
+            .data(this.datasource)
+            .enter()
+            .append("circle")
+            .style("fill", "orange")
+            .attr("cx", function(d) { return xScale(d[0]); })
+            .attr("cy", function(d) { return yScale(d[1]); })
+            .attr("r", 5);
 
-                g.append("g")
-                    .attr("transform", "translate(0," + height + ")")
-                    .call(d3.axisBottom(x))
-                    .select(".domain")
-                    .remove();
+        /*const line = d3.line()
+            .x(function(d) { return xScale(d[0]); })
+            .y(function(d) { return yScale(d[1]); });*/
 
-                g.append("g")
-                    .call(d3.axisLeft(y))
-                    .append("text")
-                    .attr("fill", "#000")
-                    .attr("transform", "rotate(-90)")
-                    .attr("y", 6)
-                    .attr("dy", "0.71em")
-                    .attr("text-anchor", "end")
-                    .text("Price ($)");
+        /*xScale.domain(d3.extent(this.datasource, d => d[0]));*/
 
-                g.append("path")
-                    .datum(data)
-                    .attr("fill", "none")
-                    .attr("stroke", "steelblue")
-                    .attr("stroke-linejoin", "round")
-                    .attr("stroke-linecap", "round")
-                    .attr("stroke-width", 1.5)
-                    .attr("d", line);
-            });
+        /*plotGroup.append("path")
+            .datum(this.datasource)
+            .attr("fill", "none")
+            .attr("stroke", "orange")
+            .attr("stroke-linejoin", "round")
+            .attr("stroke-linecap", "round")
+            .attr("stroke-width", 3)
+            .attr("d", line)*/
 
+        this.datasource.push([6,0.25]);
+
+    }
+
+    next(){
+        this.datasource.push([8,0.35]);
     }
 }

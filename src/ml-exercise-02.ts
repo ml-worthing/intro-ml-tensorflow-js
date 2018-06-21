@@ -1,4 +1,3 @@
-import color from './complementary-color';
 import * as tf from '@tensorflow/tfjs';
 import * as mt from './model-trainer';
 
