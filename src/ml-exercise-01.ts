@@ -54,9 +54,15 @@ export class MLExercise01 {
   async stop(){}
 
   private template: string = `
-      <div>
-          <button id='train'>Train</button>
-          <div id='output'></div>
+      <div class="mdl-grid">
+        <div class="mdl-cell mdl-cell--2-col">
+          <button id="train" class="mdl-button mdl-js-button mdl-button--raised mdl-button--accent">
+            Train
+          </button>
+        </div>
+        <div class="mdl-cell mdl-cell--10-col">
+            <div id="output"></div>
+        </div>
       </div>
   `;
 
