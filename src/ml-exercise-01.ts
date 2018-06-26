@@ -2,14 +2,22 @@ import color from './complementary-color';
 import * as tf from '@tensorflow/tfjs';
 import * as mt from './model-trainer';
 
+interface MLExercise01UI {
+  train: HTMLButtonElement,
+  output: HTMLElement
+}
+
 export class MLExercise01 {
 
   private readonly model: tf.Model;
-  private readonly root: HTMLElement;
+  private readonly ui: MLExercise01UI;
 
   constructor(root: HTMLElement){
-    this.root = root;
+    this.ui = this.setupUI(root);
+    this.model = this.createModel();
+  }
 
+  private createModel(){
     const input: tf.SymbolicTensor = tf.input({shape: [3]});
 
     const denseLayer1 = tf.layers.dense({units: 64, activation: 'relu'}).apply(input);
@@ -18,9 +26,9 @@ export class MLExercise01 {
     const output: tf.SymbolicTensor =
       tf.layers.dense({units: 3}).apply(denseLayer3) as tf.SymbolicTensor;
 
-    this.model = tf.model({inputs: input, outputs: output});
-    this.model.compile({loss: 'meanSquaredError', optimizer: 'sgd', metrics: ['accuracy']});
-
+    const model = tf.model({inputs: input, outputs: output});
+    model.compile({loss: 'meanSquaredError', optimizer: 'sgd', metrics: ['accuracy']});
+    return model;
   }
 
   // Create training data set
@@ -39,10 +47,28 @@ export class MLExercise01 {
       sessionSize: 1000,
       batchSize: 50,
       currentStep: 0,
-      visualizer: new mt.TrainingVisualizer(this.root)
+      visualizer: new mt.TrainingVisualizer(this.ui.output)
     });
   }
 
   async stop(){}
+
+  private template: string = `
+      <div>
+          <button id='train'>Train</button>
+          <div id='output'></div>
+      </div>
+  `;
+
+  private setupUI(anchor: HTMLElement){
+    anchor.innerHTML = this.template;
+    const train = anchor.querySelector("#train") as HTMLButtonElement;
+    const output = anchor.querySelector("#output") as HTMLElement;
+    train.addEventListener("click",(e: Event) => this.start());
+    return {
+      train: train,
+      output: output
+    }
+  }
 
 }

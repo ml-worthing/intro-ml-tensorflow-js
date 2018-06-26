@@ -1,7 +1,6 @@
-import { PolymerElement, html } from '@polymer/polymer/polymer-element';
 import * as d3 from 'd3';
 
-export class LossAccuracyChart extends PolymerElement {
+export class LossAccuracyChart {
 
     static get template() { return html`
       <div id="loss-chart"></div>

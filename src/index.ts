@@ -1,16 +1,6 @@
-import * as kebabCase from 'lodash/fp/kebabCase';
-import { MyApp } from './components/layout/app';
-import { MyStyles } from './components/styles';
-import { Sheet01 } from './components/sheet/sheet01';
-import { LossAccuracyChart } from './components/chart/loss-accuracy';
+import {MLExercise01} from "./ml-exercise-01";
 
-// add custom elements here
-const elements = {
-    MyApp, MyStyles, Sheet01, LossAccuracyChart
-};
+const app = document.getElementById("app");
+const exercise = new MLExercise01(app);
 
-// register all components as kebab case
-Object.keys(elements)
-    .forEach(key => {
-        customElements.define(kebabCase(key), elements[key])
-    });
+

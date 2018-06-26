@@ -1,40 +1,27 @@
 <!DOCTYPE html>
 <html lang="en">
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>ML Workbench</title>
-    <script src="static/webcomponents-loader.js"></script>
-    <style>
-      body {
-        margin: 0;
-        font-family: 'Roboto', 'Noto', sans-serif;
-        line-height: 1.5;
-        min-height: 100vh;
-        background-color: white;
-      }
-    </style>  
-    <custom-style>
-      <style>
-        html {
-          --app-primary-color: var(--google-blue-500);
-          --app-secondary-color: black;
-          --app-drawer-background-color: var(--google-grey-300);
-          --app-background-color: white;
-        }
-      </style>
-    <custom-style>
-</head>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <title>ML Workbench</title>
+        <style>
+          body {
+            margin: 3rem;
+            font-family: 'Roboto', 'Noto', sans-serif;
+            line-height: 1.5;
+            min-height: 100vh;
+            background-color: white;
+          }
+        </style>
+    </head>
 
-<body>
-    <my-app name="ML Worthing Study Group">
-      <div slot="drawercontent" class="box">
-        
-      </div>
-    </my-app>
-    <script src="app.js"></script>
-</body>
+    <body>
+        <div id="app">
+
+        </div>
+        <script src="app.js"></script>
+    </body>
 
 </html>
