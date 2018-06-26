@@ -53,14 +53,21 @@ export class MLExercise01 {
 
   async stop(){}
 
-  private template: string = `
+  private template: string = `    
       <div class="mdl-grid">
-        <div class="mdl-cell mdl-cell--2-col">
+        <div class="mdl-cell mdl-cell--2-offset-desktop mdl-cell--10-col">
+            <span class="mdl-layout-title">
+               Complementary color model
+            </span>
+        </div>
+      </div>
+      <div class="mdl-grid">
+        <div class="mdl-cell mdl-cell--2-offset-desktop mdl-cell--2-col">
           <button id="train" class="mdl-button mdl-js-button mdl-button--raised mdl-button--accent">
             Train
           </button>
         </div>
-        <div class="mdl-cell mdl-cell--10-col">
+        <div class="mdl-cell mdl-cell--8-col">
             <div id="output"></div>
         </div>
       </div>
